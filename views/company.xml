@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="facturamasiva_res_company">
+            <field name="name">compania.form.view</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="asw_tpv.asw_tpv_compania" />
+            <field name="arch" type="xml">
+                <field name='res_cliente_defecto' position='after'>
+                    <field name='talonario_defecto' />
+                    <field name='monto_facturar' />
+                    <field name="producto_default" />
+                </field> 
+            </field>
+        </record>
+    </data>
+</odoo>

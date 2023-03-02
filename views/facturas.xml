@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="facturamasiva_facturador_list_action">
+            <field name="res_model">facturamasiva.facturador</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="view_tree_facturamasiva_facturador_ui" model="ir.ui.view">
+            <field name="name">Recuperar Comprobantes de AFIP</field>
+            <field name="model">facturamasiva.facturador</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="(state=='cancelado')" decoration-success="(state=='procesado')">
+                    <field name="id"/>
+                    <field name="create_date"/>
+                    <field name="talonario_id" required="1"/>
+                    <field name="state" />
+                    <field name="moneda" invisible="1"/>
+                    <field name="monto_facturar" />
+                </tree>
+            </field>
+        </record>
+        <record  id="view_form_facturamasiva_facturador_ui" model="ir.ui.view">
+            <field name="name">Recuperar Comprobantes de AFIP</field>
+            <field name="model">facturamasiva.facturador</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Confirmar" name="confirmar" 
+                             attrs="{ 'invisible': [('state','!=','borrador')] }"
+                            type="object" class="oe_highlight"/> 
+                                                
+                        <button string="Procesar" name="procesar"
+                             attrs="{ 'invisible': [('state','!=','confirmado')] }" 
+                            type="object" class="oe_highlight"/>
+
+                        <button string="Desconfirmar" name="desconfirmar"
+                             attrs="{ 'invisible': [('state','!=','confirmado')] }" 
+                            type="object" class="btn btn-danger"
+                            confirm='Se van a eliminar todos los comprobantes, desea continuar?'/>
+                        
+                        <button string="Cancelar" name="cancelar"
+                             attrs="{ 'invisible': [('state','!=','procesado')] }" 
+                            type="object" class="btn btn-danger"
+                            confirm='Se van a REINTEGRAR LOS COMPROBANTES, desea continuar?'/>
+                            
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group col='4'>
+                            <field name="cliente_id" attrs="{ 'readonly' : [('state','!=', 'borrador')] }"/>
+                            <field name="talonario_id" attrs="{ 'readonly' : [('state','!=', 'borrador')] }"/>
+                            <newline />
+                            <field name="monto_maximo" attrs="{ 'readonly' : [('state','!=', 'borrador')] }"/>
+                            <field name="producto_id" attrs="{ 'readonly' : [('state','!=', 'borrador')] }"/>
+                            <field name="monto_facturar" attrs="{ 'readonly' : [('state','!=', 'borrador')] }"/>
+                            <field name="moneda" invisible="1"/>
+                        </group>
+                        <p>
+                            Estos son los comprobantes que se van a generar e informar a AFIP
+                        </p>
+                        
+                        <notebook attrs="{ 'invisible': [('state','in',('borrador'))] }">
+                            <page string="Facturas" >
+                                <field name="lineas_ids" nolabel="1" readonly="1" domain="[('comp_tal_menu','=','fac')]">
+                                    <tree create="true" delete="true" edit="true" editable="bottom">
+                                        <field name="id" />
+                                        <field name="comp_fecha" />
+                                        <field name="comp_talonario" />
+                                        <field name="comp_estado" />
+                                        <field name="comp_nro" />
+                                        <field name="comp_total_consigno" sum="true"/>
+                                    </tree>
+                                </field>
+                            </page>                            
+                        </notebook>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_search_facturamasiva_facturador" model="ir.ui.view">
+            <field name="name">Recuperar Comprobantes de AFIP</field>
+            <field name="model">facturamasiva.facturador</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="id"/>
+                    <field name="talonario_id"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

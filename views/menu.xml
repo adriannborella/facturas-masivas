@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">         
+        <menuitem name="Facturar masivamente" sequence='2' 
+            id="facturamasiva_facturador" 
+            parent="asw_tpv.asw_tpv_ventas_acciones" 
+            action='facturamasiva_facturador_list_action'/>
+    </data>
+</odoo>
